@@ -11,6 +11,7 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
+    public Text HighScoreText;
     public GameObject GameOverText;
     
     private bool m_Started = false;
@@ -38,6 +39,19 @@ public class MainManager : MonoBehaviour
 
         // Display player selected name at the start of the game
         ScoreText.text = GameManager.currentPlayerName + $" Score : {m_Points}";
+
+        // TODO Add an if statement to check if the file exists before attempting to update the score
+        // Display the highest recorded score by previous players at the top of the screen
+        
+        if (GameManager.GameManagerInstance.HighScoreList.Count == 0)
+        {
+            Debug.Log("No Previous Scores");
+        }
+        else
+        {
+            HighScoreText.text = "Best Score : " + GameManager.GameManagerInstance.HighScoreList[0].PreviousPlayerName + " : " + GameManager.GameManagerInstance.HighScoreList[0].PreviousPlayerScoreValue;
+        }
+       
     }
 
     private void Update()
@@ -74,5 +88,7 @@ public class MainManager : MonoBehaviour
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+
+        GameManager.SaveScore(m_Points);
     }
 }
